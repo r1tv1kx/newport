@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ritvik Singh | Portfolio</title>
+    <link rel="stylesheet" href="port.css">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ascii-fox" id="ascii-fox"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="profile">RS</div>
+        <div class="nav-item active" data-section="about">About</div>
+        <div class="nav-item" data-section="skills">Skills</div>
+        <div class="nav-item" data-section="experience">Experience</div>
+        <div class="nav-item" data-section="projects">Projects</div>
+        <div class="nav-item" data-section="certifications">Certifications</div>
+        <div class="nav-item" data-section="education">Education</div>
+        <div class="nav-item" data-section="contact">Contact</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <div style="color: #71717a; font-size: 13px;">ritvik@security:~$</div>
+            <div class="header-right">
+                <button class="toggle-mode" id="toggle-mode-btn" title="Switch to non-technical view">
+                    <span class="toggle-icon">🎨</span>
+                    <span>Simple View</span>
+                </button>
+                <span id="resume-btn">resume</span>
+                <span id="updates-btn">updates</span>
+                <span id="settings-btn">settings</span>
+            </div>
+        </div>
+
+        <!-- Terminal -->
+        <div class="terminal" id="terminal">
+            <div class="terminal-controls">
+                <div class="terminal-control close" id="close-btn" title="Close terminal"></div>
+                <div class="terminal-control minimize" id="minimize-btn" title="Minimize terminal"></div>
+                <div class="terminal-control maximize" id="maximize-btn" title="Maximize terminal"></div>
+            </div>
+            <div class="terminal-content">
+                <div class="system-header">RITVIK SINGH - CYBERSECURITY ANALYST</div>
+                <div class="welcome-text">Welcome to ritOS [ver. 1.0.0] - Security First, Always</div>
+
+                <!-- Init Command -->
+                <div class="command-block" id="init-block">
+                    <div class="command-label">COMMAND</div>
+                    <div class="command-line">init ritvik's_portfolio</div>
+
+                    <div class="output-label">OUTPUT</div>
+                    <div class="boot-sequence">
+                        <div id="boot-line-1" class="boot-line hidden">
+                            <span class="boot-label" data-text="Compiling profile data..."></span>
+                            <span class="boot-status ok">[OK]</span>
+                        </div>
+                        <div id="boot-line-2" class="boot-line hidden">
+                            <span class="boot-label" data-text="Executing startup sequence..."></span>
+                            <span class="boot-status ok">[OK]</span>
+                        </div>
+                        <div id="boot-line-3" class="boot-line hidden">
+                            <span class="boot-label" data-text="Initializing command interface..."></span>
+                            <span class="boot-status ok">[OK]</span>
+                        </div>
+                        <div id="boot-line-4" class="boot-line hidden">
+                            <span class="boot-label" data-text="All systems operational."></span>
+                            <span class="boot-status ready">[READY]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Section -->
+                <div id="content-section" class="hidden"></div>
+
+                <!-- Input Line -->
+                <div class="input-line">
+                    <span class="prompt">$</span>
+                    <input type="text" id="command-input" autofocus placeholder="Type a command...">
+                    <span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                <div class="modal-title" style="font-size:36px; margin-bottom:8px;">Settings</div>
+                <div style="color:#a1a1aa; margin-bottom:18px;">You can change a few things here for the website</div>
+              </div>
+              <button id="close-settings" style="background:transparent;border:none;color:var(--text);font-size:28px;cursor:pointer;">✕</button>
+            </div>
+          
+            <div class="settings-grid" style="margin-top:18px;">
+              <div>
+                <div style="font-weight:700; font-size:20px; margin-bottom:12px;">Fonts</div>
+                <div class="settings-list" id="fonts-list"></div>
+                <div style="color:#71717a; margin-top:10px; font-size:13px;">Tip: You can add other fonts by loading them in your HTML head.</div>
+              </div>
+          
+              <div>
+                <div style="font-weight:700; font-size:20px; margin-bottom:12px;">Themes</div>
+                <div class="settings-list" id="themes-list"></div>
+                <div style="color:#71717a; margin-top:10px; font-size:13px;">Light and dark variants included.</div>
+              </div>
+            </div>
+          
+            <div style="display:flex; justify-content:flex-end; margin-top:22px;">
+              <button class="close-modal" id="save-settings" style="margin-right:12px;">Save</button>
+              <button class="close-modal" id="close-settings-2">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Decoration -->
+    <div class="floating-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <script>
+        const sections = ['about', 'skills', 'experience', 'projects', 'certifications', 'education', 'contact'];
+        let isTyping = false;
+        
+        // ===================================================================
+        //                    TERMINAL WINDOW CONTROLS
+        // ===================================================================
+        
+        // Close button - show confirmation
+        document.getElementById('close-btn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to close the terminal? This will refresh the page.')) {
+                location.reload();
+            }
+        });
+        
+        // Minimize button - collapse terminal
+        document.getElementById('minimize-btn').addEventListener('click', () => {
+            const terminal = document.getElementById('terminal');
+            terminal.classList.toggle('minimized');
+        });
+        
+        // Maximize button - fullscreen terminal
+        document.getElementById('maximize-btn').addEventListener('click', () => {
+            const terminal = document.getElementById('terminal');
+            terminal.classList.toggle('maximized');
+        });
+        
+        // Auto scroll function
+        function autoScrollToBottom() {
+            const terminal = document.querySelector('.terminal');
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Typewriter effect
+        function typeWriter(element, text, speed, callback) {
+            let i = 0;
+            element.textContent = '';
+            element.classList.remove('hidden');
+            isTyping = true;
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    autoScrollToBottom();
+                    setTimeout(type, speed);
+                } else {
+                    isTyping = false;
+                    if (callback) {
+                        callback();
+                    }
+                }
+            }
+            type();
+        }
+
+        // Initialize loading sequence
+        function initializePortfolio() {
+            const bootLines = [
+                document.getElementById('boot-line-1'),
+                document.getElementById('boot-line-2'),
+                document.getElementById('boot-line-3'),
+                document.getElementById('boot-line-4')
+            ].filter(Boolean);
+            const contentSection = document.getElementById('content-section');
+
+            function runBootSequence(index = 0) {
+                if (index >= bootLines.length) {
+                    setTimeout(() => {
+                        contentSection.classList.remove('hidden');
+                        autoScrollToBottom();
+                    }, 300);
+                    return;
+                }
+
+                const line = bootLines[index];
+                const label = line.querySelector('.boot-label');
+                const text = label?.dataset.text || label?.textContent || '';
+
+                line.classList.remove('hidden');
+                typeWriter(label, text, 25, () => {
+                    line.classList.add('success');
+                    setTimeout(() => runBootSequence(index + 1), 200);
+                });
+            }
+
+            runBootSequence();
+        }
+
+        // Start initialization on page load
+        window.addEventListener('load', () => {
+            setTimeout(initializePortfolio, 500);
+        });
+        
+        // Show section function
+        function showSection(section) {
+            const contentSection = document.getElementById('content-section');
+            
+            // Create section content dynamically
+            let sectionHTML = '';
+            
+            if (section === 'about') {
+                sectionHTML = `
+                    <div class="section-title">Ritvik Singh</div>
+                    <div class="section-content">
+                        <span class="highlight">Role:</span> Cyber Security Analyst @ Cybrotech Digiventure Pvt. Ltd.
+                    </div>
+                    <div class="section-content">
+                        <span class="highlight">Specialization:</span> Penetration Testing, VAPT, SIEM, DLP Implementation
+                    </div>
+                    <div class="section-content">
+                        <span class="highlight">Objective:</span> Passionate Cybersecurity enthusiast skilled in VAPT, SIEM, and DLP implementation, with hands-on experience in penetration testing, security auditing, and enforcing cybersecurity policies to strengthen systems and protect data.
+                    </div>
+                    <div class="section-content">
+                        <span class="highlight">Philosophy:</span> Security is not a product, but a process. Every system I analyze is an opportunity to find vulnerabilities before the bad actors do.
+                    </div>
+                `;
+            } else if (section === 'skills') {
+                sectionHTML = `
+                    <div class="tag-section">
+                        <div class="tag-section-title">PENETRATION TESTING & SECURITY TOOLS</div>
+                        <div class="tag-container">
+                            <span class="tag">Burp Suite</span>
+                            <span class="tag">Wireshark</span>
+                            <span class="tag">Metasploit</span>
+                            <span class="tag">Nmap</span>
+                            <span class="tag">Nessus</span>
+                            <span class="tag">Nikto</span>
+                            <span class="tag">Hydra</span>
+                            <span class="tag">John the Ripper</span>
+                            <span class="tag">Gobuster</span>
+                        </div>
+                    </div>
+                    <div class="tag-section">
+                        <div class="tag-section-title">SIEM, MONITORING & DLP</div>
+                        <div class="tag-container">
+                            <span class="tag">Wazuh</span>
+                            <span class="tag">ThreatSpike</span>
+                            <span class="tag">Elasticsearch</span>
+                            <span class="tag">DLP Configuration</span>
+                            <span class="tag">Log Analysis</span>
+                            <span class="tag">Incident Response</span>
+                        </div>
+                    </div>
+                    <div class="tag-section">
+                        <div class="tag-section-title">SECURITY CONCEPTS & FRAMEWORKS</div>
+                        <div class="tag-container">
+                            <span class="tag">OWASP Top 10</span>
+                            <span class="tag">Web/API Security</span>
+                            <span class="tag">Network Security</span>
+                            <span class="tag">Cryptography</span>
+                            <span class="tag">Authentication</span>
+                            <span class="tag">ISO 27001</span>
+                            <span class="tag">Office Security Auditing</span>
+                        </div>
+                    </div>
+                    <div class="tag-section">
+                        <div class="tag-section-title">PROGRAMMING & SCRIPTING</div>
+                        <div class="tag-container">
+                            <span class="tag">Python</span>
+                            <span class="tag">C++</span>
+                            <span class="tag">SQL</span>
+                            <span class="tag">Bash</span>
+                            <span class="tag">Scapy</span>
+                            <span class="tag">Requests</span>
+                            <span class="tag">BeautifulSoup</span>
+                        </div>
+                    </div>
+                    <div class="tag-section">
+                        <div class="tag-section-title">CLOUD & INFRASTRUCTURE SECURITY</div>
+                        <div class="tag-container">
+                            <span class="tag">AWS</span>
+                            <span class="tag">GCP</span>
+                            <span class="tag">Azure</span>
+                            <span class="tag">Secure API Development</span>
+                            <span class="tag">Access Control</span>
+                            <span class="tag">Encryption Management</span>
+                        </div>
+                    </div>
+                `;
+            } else if (section === 'experience') {
+                sectionHTML = `
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div>
+                                <div class="experience-title">Cyber Security Analyst</div>
+                                <div class="experience-company">@Cybrotech Digiventure Pvt. Ltd.</div>
+                            </div>
+                            <div class="experience-date">Mar 2025 - Present</div>
+                        </div>
+                        <ul class="bullet-list">
+                            <li>Conducted web and network penetration testing aligned with OWASP Top 10</li>
+                            <li>Executed vulnerability assessments using Nmap and Nessus</li>
+                            <li>Deployed and tuned Data Loss Prevention (DLP) policies</li>
+                            <li>Performed Office Security Audits including endpoint hardening</li>
+                            <li>Used SIEM tools (Wazuh, ThreatSpike) for real-time log correlation</li>
+                            <li>Collaborated with backend teams to secure APIs and databases</li>
+                            <li>Authored cybersecurity policies aligned with ISO/IEC 27001:2022</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (section === 'projects') {
+                sectionHTML = `
+                    <div class="experience-item">
+                        <div class="experience-title">Network Packet Sniffer</div>
+                        <div class="experience-description" style="margin-top: 8px;">
+                            Developed a live packet sniffer for protocol inspection (TCP/UDP/ICMP) with structured logging for network forensics.
+                        </div>
+                        <div class="tag-container" style="margin-top: 12px;">
+                            <span class="tag">Python</span>
+                            <span class="tag">Scapy</span>
+                            <span class="tag">Wireshark</span>
+                        </div>
+                    </div>
+                    <div class="experience-item">
+                        <div class="experience-title">TryHackMe Writeups Collection</div>
+                        <div class="experience-description" style="margin-top: 8px;">
+                            Published 12+ walkthroughs covering privilege escalation, enumeration, brute-force, and OSINT exercises.
+                        </div>
+                        <div class="tag-container" style="margin-top: 12px;">
+                            <span class="tag">CTFs</span>
+                            <span class="tag">Pentesting</span>
+                            <span class="tag">Web Exploitation</span>
+                        </div>
+                    </div>
+                    <div class="experience-item">
+                        <div class="experience-title">GameByMood</div>
+                        <div class="experience-description" style="margin-top: 8px;">
+                            Developed mood-based game suggestion web app with secure API backend and session validation.
+                        </div>
+                        <div class="tag-container" style="margin-top: 12px;">
+                            <span class="tag">Python</span>
+                            <span class="tag">FastAPI</span>
+                            <span class="tag">JavaScript</span>
+                        </div>
+                    </div>
+                `;
+            } else if (section === 'certifications') {
+                sectionHTML = `
+                    <div class="section-content">
+                        <div class="cert-item">
+                            <span class="cert-name">Certified Ethical Hacker (CEH)</span><br>
+                            <span class="cert-issuer">EC-Council</span> • <span style="color: #71717a;">2024</span>
+                        </div>
+                        <div class="cert-item">
+                            <span class="cert-name">Google Cybersecurity Specialization</span><br>
+                            <span class="cert-issuer">Coursera</span> • <span style="color: #71717a;">2024</span>
+                        </div>
+                        <div class="cert-item">
+                            <span class="cert-name">Introduction to Cybersecurity</span><br>
+                            <span class="cert-issuer">Cisco</span> • <span style="color: #71717a;">2024</span>
+                        </div>
+                    </div>
+                `;
+            } else if (section === 'education') {
+                sectionHTML = `
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div>
+                                <div class="experience-title">Bachelor of Technology</div>
+                                <div class="experience-company">Bennett University, Greater Noida</div>
+                            </div>
+                            <div class="experience-date">2022 - 2026</div>
+                        </div>
+                        <div class="experience-description">
+                            Computer Science and Engineering (4th Year)<br>
+                            <span class="highlight">SGPA (6th Sem):</span> 9.37/10<br><br>
+                            <span class="highlight">Relevant Coursework:</span> Cybersecurity, Network Security, Penetration Testing & Ethical Hacking, Cryptography, Incident Response
+                        </div>
+                    </div>
+                `;
+            } else if (section === 'contact') {
+                sectionHTML = `
+                    <div class="section-content">
+                        📧 <span class="highlight">Email:</span> singhritvik1411@gmail.com<br>
+                        📱 <span class="highlight">Phone:</span> +91 9779720974<br>
+                        💼 <span class="highlight">LinkedIn:</span> linkedin.com/in/ritviksingh<br>
+                        💻 <span class="highlight">GitHub:</span> github.com/ritviksingh<br>
+                        📍 <span class="highlight">Location:</span> Greater Noida, Uttar Pradesh, India
+                    </div>
+                `;
+            }
+            
+            const commandBlock = document.createElement('div');
+            commandBlock.className = 'command-block';
+            commandBlock.innerHTML = `
+                <div class="command-label">COMMAND</div>
+                <div class="command-line">${section}</div>
+                <div class="output-label">OUTPUT</div>
+                ${sectionHTML}
+            `;
+            
+            contentSection.appendChild(commandBlock);
+            
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === section) {
+                    item.classList.add('active');
+                }
+            });
+            
+            autoScrollToBottom();
+        }
+
+        // Sidebar navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const section = item.dataset.section;
+                showSection(section);
+            });
+        });
+
+        // Toggle Mode Button
+        document.getElementById('toggle-mode-btn').addEventListener('click', () => {
+            window.location.href = 'simple.html';
+        });
+
+        // Resume button
+        document.getElementById('resume-btn').addEventListener('click', () => {
+            window.open('https://drive.google.com/file/d/1P_B8Ayws6eTMCblTjmjfyNbdxefsEqXA/view?usp=sharing', '_blank');
+        });
+
+        // CVE Functions
+        function toISO(d) {
+          return d.toISOString();
+        }
+
+        function formatLocal(dtStr) {
+          if (!dtStr) return 'N/A';
+          const d = new Date(dtStr);
+          return d.toLocaleString();
+        }
+
+        function extractCvss(cve) {
+          const v31 = cve.metrics?.cvssMetricV31?.[0]?.cvssData;
+          const v30 = cve.metrics?.cvssMetricV30?.[0]?.cvssData;
+          const v2  = cve.metrics?.cvssMetricV2?.[0]?.cvssData;
+          if (v31) return { score: v31.baseScore, vector: v31.vectorString, version: '3.1' };
+          if (v30) return { score: v30.baseScore, vector: v30.vectorString, version: '3.0' };
+          if (v2)  return { score: v2.baseScore, vector: v2.vectorString, version: '2.0' };
+          return { score: 'N/A', vector: '', version: '' };
+        }
+
+        function renderVulnsInto(container, nvdJson) {
+          container.innerHTML = '';
+          const vulns = nvdJson.vulnerabilities || nvdJson.results || [];
+          if (!vulns.length) {
+            container.textContent = 'No CVEs found.';
+            return;
+          }
+
+          vulns.slice(0, 50).forEach(v => {
+            const cve = v.cve || v;
+            const id = cve.id || cve.CVE_data_meta?.ID || 'UNKNOWN';
+            const desc = (cve.descriptions && cve.descriptions.find(d => d.lang === 'en')?.value)
+                         || cve.description || 'No description';
+            const published = cve.published || cve.publishedDate || cve.Published || 'N/A';
+            const lastModified = cve.lastModified || cve.lastModifiedDate || cve.LastModified || 'N/A';
+            const cvss = extractCvss(cve);
+            const sev =
+              cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseSeverity ||
+              cve.metrics?.cvssMetricV30?.[0]?.cvssData?.baseSeverity ||
+              cve.metrics?.cvssMetricV2?.[0]?.baseSeverity ||
+              (cvss.score !== 'N/A' ? (cvss.score >= 9 ? 'CRITICAL' : cvss.score >= 7 ? 'HIGH' : cvss.score >= 4 ? 'MEDIUM' : 'LOW') : 'UNKNOWN');
+
+            const card = document.createElement('div');
+            card.className = 'cve-item';
+            card.innerHTML = `
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-weight:700; color: #fbbf24;">${id}</div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <div class="cve-severity ${String(sev).toLowerCase()}" style="padding:6px 8px; border-radius:6px; font-weight:700; font-size:12px;">
+                    ${sev}
+                  </div>
+                  <div style="font-size:12px; color:#a1a1aa;">CVSS: ${cvss.score} ${cvss.version ? 'v' + cvss.version : ''}</div>
+                </div>
+              </div>
+              <div class="section-content" style="margin-top:10px;">${desc}</div>
+              <div style="color:#71717a; font-size:12px; margin-top:10px;">
+                Published: ${formatLocal(published)} • Last modified: ${formatLocal(lastModified)}
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        }
+
+        function todayRangeISO() {
+          const now = new Date();
+          const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+          return { startISO: toISO(start), endISO: toISO(now) };
+        }
+
+        async function fetchTodaysCVEs() {
+          const contentSection = document.getElementById('content-section');
+          const block = document.createElement('div');
+          block.className = 'command-block';
+          block.innerHTML = `
+            <div class="command-label">COMMAND</div>
+            <div class="command-line">fetch latest_cves --today</div>
+            <div class="output-label">OUTPUT</div>
+          `;
+          contentSection.appendChild(block);
+
+          const output = document.createElement('div');
+          output.className = 'section-content';
+          output.textContent = "Fetching today's CVEs (UTC)...";
+          block.appendChild(output);
+          autoScrollToBottom();
+
+          const { startISO, endISO } = todayRangeISO();
+          const url = `/api/cves?resultsPerPage=50&pubStartDate=${encodeURIComponent(startISO)}&pubEndDate=${encodeURIComponent(endISO)}`;
+
+          try {
+            const resp = await fetch(url);
+            if (!resp.ok) throw new Error(`Proxy returned ${resp.status}`);
+            const data = await resp.json();
+            renderVulnsInto(output, data);
+            autoScrollToBottom();
+          } catch (err) {
+            output.innerHTML = `<div style="color:#ef4444">Error: ${err.message}</div>`;
+            autoScrollToBottom();
+          }
+        }
+
+        async function searchCVEs(keyword) {
+          const contentSection = document.getElementById('content-section');
+          const block = document.createElement('div');
+          block.className = 'command-block';
+          block.innerHTML = `
+            <div class="command-label">COMMAND</div>
+            <div class="command-line">search ${keyword}</div>
+            <div class="output-label">OUTPUT</div>
+          `;
+          contentSection.appendChild(block);
+
+          const output = document.createElement('div');
+          output.className = 'section-content';
+          output.textContent = `Searching NVD for "${keyword}"...`;
+          block.appendChild(output);
+          autoScrollToBottom();
+
+          const url = `/api/cves?resultsPerPage=50&keywordSearch=${encodeURIComponent(keyword)}`;
+
+          try {
+            const resp = await fetch(url);
+            if (!resp.ok) throw new Error(`Proxy returned ${resp.status}`);
+            const data = await resp.json();
+            renderVulnsInto(output, data);
+            autoScrollToBottom();
+          } catch (err) {
+            output.innerHTML = `<div style="color:#ef4444">Error: ${err.message}</div>`;
+            autoScrollToBottom();
+          }
+        }
+
+        document.getElementById('updates-btn').addEventListener('click', () => {
+          fetchTodaysCVEs();
+        });
+
+        // Command history
+        const CMD_HISTORY = [];
+        function echoCommand(raw) {
+          const contentSection = document.getElementById('content-section');
+          const commandEcho = document.createElement('div');
+          commandEcho.className = 'command-block';
+          commandEcho.innerHTML = `
+            <div class="command-label">COMMAND</div>
+            <div class="command-line">${raw}</div>
+            <div class="output-label">OUTPUT</div>
+          `;
+          contentSection.appendChild(commandEcho);
+          autoScrollToBottom();
+          return commandEcho;
+        }
+
+        function appendOutput(commandEcho, htmlOrText, asHTML=false) {
+          const outputDiv = document.createElement('div');
+          outputDiv.className = 'section-content';
+          if (asHTML) outputDiv.innerHTML = htmlOrText;
+          else outputDiv.textContent = htmlOrText;
+          commandEcho.appendChild(outputDiv);
+          autoScrollToBottom();
+          return outputDiv;
+        }
+
+        // System info
+        const SYSTEM_INFO = {
+          user: 'amazing_guest',
+          host: 'ritos',
+          kernel: (() => {
+            const major = 5 + Math.floor(Math.random() * 2);
+            const minor = Math.floor(Math.random() * 20);
+            const patch = Math.floor(Math.random() * 20);
+            const names = ['ritviking', 'quantum', 'nebula', 'shadow', 'zenith', 'asteroid', 'nightfox', 'nova', 'harpoon', 'falcon'];
+            const nick = names[Math.floor(Math.random() * names.length)];
+            return `${major}.${minor}.${patch}-${nick}`;
+          })(),
+          arch: (() => {
+            const list = ['x86_64', 'arm64', 'aarch64', 'riscv64'];
+            return list[Math.floor(Math.random() * list.length)];
+          })(),
+          uptimeStart: (() => {
+            const min = 30;
+            const max = 36 * 60;
+            const randomMinutes = Math.floor(Math.random() * (max - min) + min);
+            return Date.now() - randomMinutes * 60 * 1000;
+          })(),
+          systemTime: new Date().toLocaleTimeString(),
+          systemDate: new Date().toLocaleDateString()
+        };
+
+        const VFS = {
+          'README.txt': `Ritvik's Security Portfolio\nCommands available: help, today, search, uptime, date, uname -a, ls, cat <file>, ps, netstat, ping <host>, history, open resume\nType 'help' for more.`,
+          'RESUME.txt': `Ritvik Singh — Cyber Security Analyst\nEmail: singhritvik1411@gmail.com\nGitHub: github.com/ritviksingh`,
+          'LICENSE': `MIT License — demo content only`
+        };
+
+        const FORTUNES = [
+          'Security is a process—keep iterating.',
+          'Zero-days are just bugs with better branding.',
+          'Trust no input. Seriously. None.',
+          'Remember: backups or backfires.',
+          'The loudest alert is the one you silenced.'
+        ];
+
+        function appendSection(commandEcho, className = 'section-content') {
+          const div = document.createElement('div');
+          div.className = className;
+          commandEcho.appendChild(div);
+          autoScrollToBottom();
+          return div;
+        }
+
+        function simulateBrewInstall(commandEcho) {
+          const container = appendSection(commandEcho, 'section-content fun-output');
+          const steps = [
+            '==> Tapping secure/repos/fun',
+            '==> Downloading fun-1.0.0.tar.gz',
+            '################################################## 100%',
+            '==> Verifying SHA-256…',
+            '==> Pouring fun-1.0.0',
+            '🍻  /opt/homebrew/Cellar/fun/1.0.0: 5 files, 42KB'
+          ];
+          let idx = 0;
+          function next() {
+            if (idx === steps.length) {
+              const done = document.createElement('div');
+              done.className = 'fun-success';
+              done.textContent = 'Fun successfully linked! Try `launch fireworks` ✨';
+              container.appendChild(done);
+              return;
+            }
+            const line = document.createElement('div');
+            line.className = 'fun-progress';
+            line.textContent = steps[idx];
+            container.appendChild(line);
+            idx++;
+            setTimeout(next, 450);
+          }
+          next();
+        }
+
+        function launchFireworks(commandEcho) {
+          const container = appendSection(commandEcho, 'section-content fun-fireworks');
+          const frames = [
+            '        . .    *     .      ✦',
+            '   ✦      *     .       .      ✦',
+            '  .   .  ✺   BOOM!   ✺  .   .  ',
+            '✦     .     ✦     .     ✦     .',
+            '    *     ✦    *     ✦    *    '
+          ];
+          container.innerHTML = frames.map(f => `<div>${f}</div>`).join('');
+          setTimeout(() => container.classList.add('sparkle'), 100);
+        }
+
+        function rollDice(commandEcho) {
+          const container = appendSection(commandEcho, 'section-content fun-output');
+          const d1 = Math.ceil(Math.random() * 6);
+          const d2 = Math.ceil(Math.random() * 6);
+          container.innerHTML = `
+            <div class="fun-dice">
+              <div>🎲 Die #1: <span>${d1}</span></div>
+              <div>🎲 Die #2: <span>${d2}</span></div>
+              <div class="fun-success">Total: ${d1 + d2}</div>
+            </div>
+          `;
+        }
+
+        function tellFortune(commandEcho) {
+          const container = appendSection(commandEcho, 'section-content fun-output');
+          const fortune = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+          container.innerHTML = `<div class="fun-fortune">🔮 ${fortune}</div>`;
+        }
+
+        function purgeBoredom(commandEcho) {
+          const container = appendSection(commandEcho, 'section-content fun-output');
+          const lines = [
+            '[sudo] password for ritvik: ********',
+            'rm: boredom deleted permanently.',
+            'System mood: ✨ optimistic ✨'
+          ];
+          container.innerHTML = lines.map(line => `<div>${line}</div>`).join('');
+        }
+
+        function handleFunCommand(lower, commandEcho) {
+          switch (lower) {
+            case 'brew install fun':
+              simulateBrewInstall(commandEcho);
+              return true;
+            case 'launch fireworks':
+              launchFireworks(commandEcho);
+              return true;
+            case 'roll dice':
+              rollDice(commandEcho);
+              return true;
+            case 'fortune':
+              tellFortune(commandEcho);
+              return true;
+            case 'sudo rm -rf boredom':
+              purgeBoredom(commandEcho);
+              return true;
+            default:
+              return false;
+          }
+        }
+
+        function fmtUptime() {
+          const uptimeMs = Date.now() - SYSTEM_INFO.uptimeStart;
+          const s = Math.floor(uptimeMs/1000);
+          const h = Math.floor(s/3600);
+          const m = Math.floor((s%3600)/60);
+          const sec = s % 60;
+          return `${h} hours ${m} minutes ${sec} seconds`;
+        }
+
+        function fakePs() {
+          return `  PID   USER       %CPU  %MEM  CMD
+  1032  ${SYSTEM_INFO.user}     3.2   1.1  /usr/bin/node index.js
+  1478  root       0.2   0.3  /usr/sbin/cron
+  2110  ${SYSTEM_INFO.user}     0.9   0.8  /usr/bin/python3 scanner.py`;
+        }
+
+        function fakeNetstat() {
+          return `Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address        Foreign Address      State
+tcp        0      0 127.0.0.1:3000       0.0.0.0:*            LISTEN
+tcp        0      0 192.168.1.12:53597   example.com:443      ESTABLISHED`;
+        }
+
+        function fakeIfconfig() {
+          return `eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+inet 192.168.1.12  netmask 255.255.255.0  broadcast 192.168.1.255
+ether 12:34:56:78:9a:bc  txqueuelen 1000  (Ethernet)`;
+        }
+
+        function simulatePing(host, count=4) {
+          const times = [];
+          for (let i=0;i<count;i++) {
+            times.push((20 + Math.floor(Math.random()*80)) + ' ms');
+          }
+          return `PING ${host}: ${times.join('  ')}`;
+        }
+
+        const inputEl = document.getElementById('command-input');
+
+        const BUILTIN_COMMANDS = [
+          'help','whoami','date','uptime','uname -a','ls','cat','ps','top','netstat','ifconfig',
+          'ping','history','clear','cls','open resume','resume','today','fetch latest_cves --today','search'
+        ];
+        const FUN_COMMAND_LIST = [
+          'brew install fun',
+          'launch fireworks',
+          'roll dice',
+          'fortune',
+          'sudo rm -rf boredom'
+        ];
+        const ALL_COMMANDS = Array.from(new Set([...BUILTIN_COMMANDS, ...sections, ...FUN_COMMAND_LIST]));
+
+        let historyPos = CMD_HISTORY.length;
+
+        function levenshtein(a, b) {
+          if (a === b) return 0;
+          const al = a.length, bl = b.length;
+          if (al === 0) return bl;
+          if (bl === 0) return al;
+          const dp = Array(bl + 1).fill(0).map((_, i) => i);
+
+          for (let i=1;i<=al;i++) {
+            let prev = dp[0];
+            dp[0] = i;
+            for (let j=1;j<=bl;j++) {
+              const temp = dp[j];
+              dp[j] = Math.min(
+                dp[j] + 1,
+                dp[j-1] + 1,
+                prev + (a[i-1] === b[j-1] ? 0 : 1)
+              );
+              prev = temp;
+            }
+          }
+          return dp[bl];
+        }
+
+        function fuzzyMatch(input, candidates, maxDist = 2) {
+          input = input.toLowerCase().trim();
+          if (!input) return null;
+
+          const prefix = candidates.find(c => c.toLowerCase().startsWith(input));
+          if (prefix) return prefix;
+
+          let best = null, bestDist = Infinity;
+          for (const c of candidates) {
+            const d = levenshtein(input, c.toLowerCase());
+            if (d < bestDist) { bestDist = d; best = c; }
+          }
+          return bestDist <= maxDist ? best : null;
+        }
+
+        function autocomplete(input, candidates) {
+          const s = input.toLowerCase();
+          const matches = candidates.filter(c => c.toLowerCase().startsWith(s));
+          if (matches.length === 1) return matches[0];
+          if (matches.length > 1) return matches.slice(0, 6);
+          return null;
+        }
+
+        function showHelp(commandEcho) {
+          const helpText = `<pre style="font-family: var(--ui-font, monospace); line-height: 1.6; margin: 0; white-space: pre-wrap;">${[
+            '',
+            '<span style="color: #fabd2f; font-weight: 700;">ritOS v1.0.0 - Available Commands</span>',
+            '═'.repeat(60),
+            '',
+            '<span style="color: #83a598; font-weight: 700;">PORTFOLIO SECTIONS</span>',
+            '  about              Navigate to About section',
+            '  skills             Navigate to Skills section',
+            '  experience         Navigate to Experience section',
+            '  projects           Navigate to Projects section',
+            '  certifications     Navigate to Certifications section',
+            '  education          Navigate to Education section',
+            '  contact            Navigate to Contact section',
+            '',
+            '<span style="color: #83a598; font-weight: 700;">SYSTEM COMMANDS</span>',
+            '  help, ls           Display this help message',
+            '  whoami             Display current user information',
+            '  date               Show current date and time',
+            '  uptime             Display system uptime',
+            '  uname -a           Show system information',
+            '  history            Display command history',
+            '  clear, cls         Clear terminal screen',
+            '',
+            '<span style="color: #83a598; font-weight: 700;">FILE OPERATIONS</span>',
+            '  ls                 List available files',
+            '  cat &lt;file&gt;       Display file contents',
+            '                     Example: cat README.txt',
+            '',
+            '<span style="color: #83a598; font-weight: 700;">NETWORK COMMANDS</span>',
+            '  ps, top            Show running processes',
+            '  netstat            Display network connections',
+            '  ifconfig           Show network interface configuration',
+            '  ping &lt;host&gt;        Ping a network host',
+            '                     Example: ping example.com',
+            '',
+            '<span style="color: #83a598; font-weight: 700;">SECURITY UPDATES</span>',
+            '  today              Fetch today\'s CVEs from NVD',
+            '  search &lt;keyword&gt;   Search CVEs by keyword',
+            '                     Example: search apache',
+            '',
+            '<span style="color: #83a598; font-weight: 700;">RESUME</span>',
+            '  resume             Open resume in new tab',
+            '  open resume        Alias for resume command',
+            '',
+            '<span style="color: #83a598; font-weight: 700;">FUN COMMANDS</span>',
+            '  brew install fun   Install fun mode',
+            '  launch fireworks   Celebrate with fireworks',
+            '  roll dice          Roll a virtual dice',
+            '  fortune            Get a random fortune',
+            '  sudo rm -rf boredom Remove boredom from the system',
+            '',
+            '─'.repeat(60),
+            '<span style="color: #71717a; font-size: 11px;">Tips: Use Tab for autocomplete | ↑/↓ for command history</span>',
+            ''
+          ].join('\n')}</pre>`;
+          
+          appendOutput(commandEcho, helpText, true);
+        }
+
+        function showNeofetchThenAbout(commandEcho) {
+          const lines = [
+            ` ${SYSTEM_INFO.user}@${SYSTEM_INFO.host}`,
+            ` Kernel: ${SYSTEM_INFO.kernel}`,
+            ` Arch: ${SYSTEM_INFO.arch}`,
+            ` Uptime: ${fmtUptime()}`,
+            ` Time: ${new Date().toLocaleString()}`
+          ];
+          const html = `<pre style="line-height:1.05; font-weight:600; color:#cbd5e1;">${lines.join('\n')}</pre>`;
+          appendOutput(commandEcho, html, true);
+
+          setTimeout(() => showSection('about'), 700);
+        }
+
+        inputEl.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowUp') {
+            if (historyPos > 0) historyPos--;
+            inputEl.value = CMD_HISTORY[historyPos] || '';
+            e.preventDefault();
+            return;
+          }
+          if (e.key === 'ArrowDown') {
+            if (historyPos < CMD_HISTORY.length) historyPos++;
+            inputEl.value = CMD_HISTORY[historyPos] || '';
+            e.preventDefault();
+            return;
+          }
+
+          if (e.key === 'Tab') {
+            e.preventDefault();
+            const cur = inputEl.value.trim();
+            if (!cur) return;
+
+            const ac = autocomplete(cur, ALL_COMMANDS);
+
+            if (!ac) {
+              const multi = autocomplete(cur, ALL_COMMANDS);
+              if (Array.isArray(multi)) {
+                const old = inputEl.placeholder;
+                inputEl.placeholder = 'Suggestions: ' + multi.join(' | ');
+                setTimeout(()=> inputEl.placeholder = old, 1600);
+              }
+              return;
+            }
+
+            inputEl.value = ac + (ac.includes(' ') ? ' ' : '');
+          }
+        });
+
+        inputEl.addEventListener('keydown', async (e) => {
+          if (e.key !== 'Enter' || isTyping) return;
+
+          const raw = inputEl.value.trim();
+          inputEl.value = '';
+          if (!raw) return;
+
+          CMD_HISTORY.push(raw);
+          historyPos = CMD_HISTORY.length;
+
+          const lower = raw.toLowerCase();
+          const commandEcho = echoCommand(raw);
+
+          if (lower === 'help' || lower === 'ls') { showHelp(commandEcho); return; }
+          if (sections.includes(lower)) { appendOutput(commandEcho, `Opening ${lower}...`); showSection(lower); return; }
+          if (lower === 'whoami') { appendOutput(commandEcho, SYSTEM_INFO.user); return; }
+          if (lower === 'date') { appendOutput(commandEcho, new Date().toString()); return; }
+          if (lower === 'uptime') { appendOutput(commandEcho, fmtUptime()); return; }
+          if (lower === 'uname -a') { appendOutput(commandEcho, `${SYSTEM_INFO.kernel} ${SYSTEM_INFO.arch} ${SYSTEM_INFO.host}`); return; }
+          if (lower === 'ps' || lower === 'top') { appendOutput(commandEcho, fakePs()); return; }
+          if (lower === 'netstat') { appendOutput(commandEcho, fakeNetstat()); return; }
+          if (lower === 'ifconfig') { appendOutput(commandEcho, fakeIfconfig()); return; }
+          if (lower === 'history') { appendOutput(commandEcho, CMD_HISTORY.join('\n')); return; }
+          if (lower === 'clear' || lower === 'cls') { appendOutput(commandEcho, 'Clearing terminal...'); setTimeout(()=> location.reload(), 500); return; }
+
+          if (lower.startsWith('ping ')) {
+            const host = raw.slice(5).trim() || 'example.com';
+            appendOutput(commandEcho, simulatePing(host));
+            return;
+          }
+
+          if (lower.startsWith('cat ')) {
+            const fname = raw.slice(4).trim();
+            if (!fname) { appendOutput(commandEcho, 'cat: missing filename'); return; }
+            const content = VFS[fname] || VFS[fname.toUpperCase()];
+            appendOutput(commandEcho, content || `cat: ${fname}: No such file or directory`);
+            return;
+          }
+
+          if (lower === 'open resume' || lower === 'resume') {
+            appendOutput(commandEcho, 'Opening resume...');
+            window.open('https://drive.google.com/file/d/1P_B8Ayws6eTMCblTjmjfyNbdxefsEqXA/view?usp=sharing', '_blank');
+            return;
+          }
+
+          if (lower === 'today' || lower === 'fetch latest_cves --today') {
+            appendOutput(commandEcho, "Fetching today's CVEs...");
+            fetchTodaysCVEs();
+            return;
+          }
+
+          if (lower.startsWith('search ')) {
+            const term = raw.slice(7).trim();
+            appendOutput(commandEcho, `Searching for "${term}"...`);
+            searchCVEs(term);
+            return;
+          }
+
+          if (handleFunCommand(lower, commandEcho)) {
+            return;
+          }
+
+          const fuzzySection = fuzzyMatch(lower, sections, 2);
+          if (fuzzySection) {
+            appendOutput(commandEcho, `Did you mean "${fuzzySection}"? Opening...`);
+            if (fuzzySection === 'about') showNeofetchThenAbout(commandEcho);
+            else showSection(fuzzySection);
+            return;
+          }
+
+          const fuzzyBuiltin = fuzzyMatch(lower, BUILTIN_COMMANDS, 2);
+          if (fuzzyBuiltin) {
+            appendOutput(commandEcho, `Interpreting as "${fuzzyBuiltin}"...`);
+            if (fuzzyBuiltin === 'help' || fuzzyBuiltin === 'ls') { showHelp(commandEcho); return; }
+            if (fuzzyBuiltin === 'whoami') { appendOutput(commandEcho, SYSTEM_INFO.user); return; }
+            if (fuzzyBuiltin === 'date') { appendOutput(commandEcho, new Date().toString()); return; }
+            if (fuzzyBuiltin === 'uptime') { appendOutput(commandEcho, fmtUptime()); return; }
+            if (fuzzyBuiltin === 'uname -a') { appendOutput(commandEcho, `${SYSTEM_INFO.kernel} ${SYSTEM_INFO.arch} ${SYSTEM_INFO.host}`); return; }
+            if (fuzzyBuiltin === 'today') { appendOutput(commandEcho, "Fetching today's CVEs..."); fetchTodaysCVEs(); return; }
+
+            appendOutput(commandEcho, `Executed ${fuzzyBuiltin}`);
+            return;
+          }
+
+          appendOutput(commandEcho, `bash: ${raw}: command not found\nTry: help`);
+        });
+
+        // Settings
+        const FONT_OPTIONS = [
+          { id: 'azeret-mono', name: 'Azeret Mono', stack: '"Azeret Mono", "Menlo", "Monaco", monospace', tag: 'MONO' },
+          { id: 'jetbrains-mono', name: 'JetBrains Mono', stack: '"JetBrains Mono", "Menlo", monospace', tag: 'MONO' },
+          { id: 'space-mono', name: 'Space Mono', stack: '"Space Mono", "Menlo", monospace', tag: 'MONO' },
+          { id: 'inter', name: 'Inter', stack: '"Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial', tag: 'SANS' },
+          { id: 'geist', name: 'Geist', stack: '"Geist", system-ui, -apple-system, "Segoe UI", Roboto, Arial', tag: 'SANS' },
+          { id: 'arvo', name: 'Arvo', stack: '"Arvo", Georgia, serif', tag: 'SLAB' }
+        ];
+
+        const THEME_OPTIONS = [
+          {
+            id: 'gruvbox-light',
+            name: 'gruvbox light',
+            badge: 'LIGHT',
+            vars: {
+              '--bg': '#fbf1c7',
+              '--bg-dark': '#fbf1c7',
+              '--bg-sidebar': '#f2e5c9',
+              '--panel': '#f3e9c1',
+              '--text': '#3b2f2f',
+              '--muted': '#7b6a6a',
+              '--accent': '#b57614',
+              '--accent-2': '#d65d0e',
+              '--yellow': '#b57614',
+              '--blue': '#076678',
+              '--danger': '#b93a3a',
+              '--terminal-bg': '#f9f5d7',
+              '--terminal-border': '#d5c4a1',
+              '--terminal-title-bg': '#f2e5bc',
+              '--terminal-title-text': '#7c6f64'
+            }
+          },
+          {
+            id: 'gruvbox-dark',
+            name: 'gruvbox dark',
+            badge: 'DARK',
+            vars: {
+              '--bg': '#282828',
+              '--bg-dark': '#282828',
+              '--bg-sidebar': '#1d2021',
+              '--panel': '#2a2a2a',
+              '--text': '#ebdbb2',
+              '--muted': '#bdae93',
+              '--accent': '#fabd2f',
+              '--accent-2': '#fb4934',
+              '--yellow': '#fabd2f',
+              '--blue': '#83a598',
+              '--danger': '#fb4934',
+              '--terminal-bg': '#1d2021',
+              '--terminal-border': '#3c3836',
+              '--terminal-title-bg': '#282828',
+              '--terminal-title-text': '#a89984'
+            }
+          },
+          {
+            id: 'catppuccin-latte',
+            name: 'catppuccin latte',
+            badge: 'LIGHT',
+            vars: {
+              '--bg': '#eff1f5',
+              '--bg-dark': '#eff1f5',
+              '--bg-sidebar': '#e6e9ef',
+              '--panel': '#ccd0da',
+              '--text': '#4c4f69',
+              '--muted': '#6c6f85',
+              '--accent': '#8839ef',
+              '--accent-2': '#d20f39',
+              '--yellow': '#df8e1d',
+              '--blue': '#1e66f5',
+              '--danger': '#d20f39',
+              '--terminal-bg': '#e6e9ef',
+              '--terminal-border': '#bcc0cc',
+              '--terminal-title-bg': '#dce0e8',
+              '--terminal-title-text': '#5c5f77'
+            }
+          },
+          {
+            id: 'catppuccin-frappe',
+            name: 'catppuccin frappe',
+            badge: 'DARK',
+            vars: {
+              '--bg': '#303446',
+              '--bg-dark': '#303446',
+              '--bg-sidebar': '#292c3c',
+              '--panel': '#414559',
+              '--text': '#c6d0f5',
+              '--muted': '#a5adce',
+              '--accent': '#ca9ee6',
+              '--accent-2': '#e78284',
+              '--yellow': '#e5c890',
+              '--blue': '#8caaee',
+              '--danger': '#e78284',
+              '--terminal-bg': '#292c3c',
+              '--terminal-border': '#414559',
+              '--terminal-title-bg': '#303446',
+              '--terminal-title-text': '#949cbb'
+            }
+          },
+          {
+            id: 'catppuccin-macchiato',
+            name: 'catppuccin macchiato',
+            badge: 'DARK',
+            vars: {
+              '--bg': '#24273a',
+              '--bg-dark': '#24273a',
+              '--bg-sidebar': '#1e2030',
+              '--panel': '#363a4f',
+              '--text': '#cad3f5',
+              '--muted': '#a5adcb',
+              '--accent': '#c6a0f6',
+              '--accent-2': '#ed8796',
+              '--yellow': '#eed49f',
+              '--blue': '#8aadf4',
+              '--danger': '#ed8796',
+              '--terminal-bg': '#1e2030',
+              '--terminal-border': '#363a4f',
+              '--terminal-title-bg': '#24273a',
+              '--terminal-title-text': '#939ab7'
+            }
+          },
+          {
+            id: 'catppuccin-mocha',
+            name: 'catppuccin mocha',
+            badge: 'DARK',
+            vars: {
+              '--bg': '#1e1e2e',
+              '--bg-dark': '#1e1e2e',
+              '--bg-sidebar': '#181825',
+              '--panel': '#313244',
+              '--text': '#cdd6f4',
+              '--muted': '#a6adc8',
+              '--accent': '#cba6f7',
+              '--accent-2': '#f38ba8',
+              '--yellow': '#f9e2af',
+              '--blue': '#89b4fa',
+              '--danger': '#f38ba8',
+              '--terminal-bg': '#181825',
+              '--terminal-border': '#313244',
+              '--terminal-title-bg': '#1e1e2e',
+              '--terminal-title-text': '#9399b2'
+            }
+          }
+        ];
+
+        function applyThemeVars(vars) {
+          const root = document.documentElement;
+          Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
+        }
+
+        function applyFontStack(stack) {
+          document.documentElement.style.setProperty('--ui-font', stack);
+        }
+
+        function renderSettingsUI() {
+          const fontsList = document.getElementById('fonts-list');
+          const themesList = document.getElementById('themes-list');
+          fontsList.innerHTML = '';
+          themesList.innerHTML = '';
+
+          const currentFont = localStorage.getItem('portfolio_font') || FONT_OPTIONS[0].id;
+          const currentTheme = localStorage.getItem('portfolio_theme') || THEME_OPTIONS[1].id;
+
+          FONT_OPTIONS.forEach(f => {
+            const el = document.createElement('div');
+            el.className = 'setting-card' + (f.id === currentFont ? ' selected' : '');
+            el.dataset.id = f.id;
+            el.dataset.stack = f.stack;
+            el.innerHTML = `<div class="label">${f.name}</div><div class="tag">${f.tag}</div>`;
+            el.addEventListener('click', () => {
+              document.querySelectorAll('#fonts-list .setting-card').forEach(x => x.classList.remove('selected'));
+              el.classList.add('selected');
+              applyFontStack(f.stack);
+              localStorage.setItem('portfolio_font', f.id);
+            });
+            fontsList.appendChild(el);
+          });
+
+          THEME_OPTIONS.forEach(t => {
+            const el = document.createElement('div');
+            el.className = 'setting-card' + (t.id === currentTheme ? ' selected' : '');
+            el.dataset.id = t.id;
+            el.innerHTML = `<div class="label">${t.name}</div><div class="theme-badge">${t.badge}</div>`;
+            el.addEventListener('click', () => {
+              document.querySelectorAll('#themes-list .setting-card').forEach(x => x.classList.remove('selected'));
+              el.classList.add('selected');
+              applyThemeVars(t.vars);
+              localStorage.setItem('portfolio_theme', t.id);
+            });
+            themesList.appendChild(el);
+          });
+        }
+
+        function loadSavedSettings() {
+          const savedFontId = localStorage.getItem('portfolio_font') || FONT_OPTIONS[0].id;
+          const savedThemeId = localStorage.getItem('portfolio_theme') || THEME_OPTIONS[1].id;
+
+          const f = FONT_OPTIONS.find(x => x.id === savedFontId) || FONT_OPTIONS[0];
+          const t = THEME_OPTIONS.find(x => x.id === savedThemeId) || THEME_OPTIONS[1];
+
+          applyFontStack(f.stack);
+          applyThemeVars(t.vars);
+        }
+
+        document.getElementById('settings-btn').addEventListener('click', () => {
+          document.getElementById('settings-modal').classList.add('active');
+          renderSettingsUI();
+        });
+        document.getElementById('close-settings').addEventListener('click', () => {
+          document.getElementById('settings-modal').classList.remove('active');
+        });
+        document.getElementById('close-settings-2').addEventListener('click', () => {
+          document.getElementById('settings-modal').classList.remove('active');
+        });
+        document.getElementById('save-settings').addEventListener('click', () => {
+          document.getElementById('settings-modal').classList.remove('active');
+        });
+
+        loadSavedSettings();
+
+        document.addEventListener('click', () => {
+          inputEl.focus();
+        });
+    </script>
+</body>
+</html>
