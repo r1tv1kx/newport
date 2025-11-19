@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Geist&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="ascii-fox" id="ascii-fox"></div>
@@ -53,7 +54,7 @@
             </div>
             <div class="terminal-content">
                 <div class="system-header">RITVIK SINGH - CYBERSECURITY ANALYST</div>
-                <div class="welcome-text">Welcome to ritOS [ver. 1.0.0] - Security First, Always</div>
+                <div class="welcome-text">Welcome to ritOS [ver. 1.0.0]</div>
 
                 <!-- Init Command -->
                 <div class="command-block" id="init-block">
@@ -87,7 +88,7 @@
                 <!-- Input Line -->
                 <div class="input-line">
                     <span class="prompt">$</span>
-                    <input type="text" id="command-input" autofocus placeholder="Type a command...">
+                    <input type="text" id="command-input" autofocus placeholder="Type a command (type 'help' for list of commands)...">
                     <span class="cursor"></span>
                 </div>
             </div>
@@ -1060,6 +1061,7 @@ ether 12:34:56:78:9a:bc  txqueuelen 1000  (Ethernet)`;
           { id: 'azeret-mono', name: 'Azeret Mono', stack: '"Azeret Mono", "Menlo", "Monaco", monospace', tag: 'MONO' },
           { id: 'jetbrains-mono', name: 'JetBrains Mono', stack: '"JetBrains Mono", "Menlo", monospace', tag: 'MONO' },
           { id: 'space-mono', name: 'Space Mono', stack: '"Space Mono", "Menlo", monospace', tag: 'MONO' },
+          { id: 'fira-code', name: 'Fira Code', stack: '"Fira Code", "Consolas", "Monaco", monospace', tag: 'MONO' },
           { id: 'inter', name: 'Inter', stack: '"Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial', tag: 'SANS' },
           { id: 'geist', name: 'Geist', stack: '"Geist", system-ui, -apple-system, "Segoe UI", Roboto, Arial', tag: 'SANS' },
           { id: 'arvo', name: 'Arvo', stack: '"Arvo", Georgia, serif', tag: 'SLAB' }
@@ -1196,6 +1198,28 @@ ether 12:34:56:78:9a:bc  txqueuelen 1000  (Ethernet)`;
               '--terminal-border': '#313244',
               '--terminal-title-bg': '#1e1e2e',
               '--terminal-title-text': '#9399b2'
+            }
+          },
+          {
+            id: 'cyber-green',
+            name: 'cyber green',
+            badge: 'DARK',
+            vars: {
+              '--bg': '#0a0e0a',
+              '--bg-dark': '#0a0e0a',
+              '--bg-sidebar': '#050805',
+              '--panel': '#0f1a0f',
+              '--text': '#00ff41',
+              '--muted': '#00cc33',
+              '--accent': '#00ff41',
+              '--accent-2': '#39ff14',
+              '--yellow': '#ffff00',
+              '--blue': '#00ffff',
+              '--danger': '#ff0040',
+              '--terminal-bg': '#000000',
+              '--terminal-border': '#00ff41',
+              '--terminal-title-bg': '#050805',
+              '--terminal-title-text': '#00ff41'
             }
           }
         ];

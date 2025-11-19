@@ -28,6 +28,13 @@
   --terminal-border: #30363d;
   --terminal-title-bg: #1c2128;
   --terminal-title-text: #8b949e;
+  
+  /* Font variable with default */
+  --ui-font: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html, body {
@@ -36,12 +43,12 @@ html, body {
 
 body {
   background: var(--bg-dark);
-  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-family: var(--ui-font);
   color: var(--text);
   height: 100vh;
   overflow: hidden;
   display: flex;
-  transition: background 0.3s, color 0.3s;
+  transition: background 0.3s, color 0.3s, font-family 0.3s;
 }
 
 /* Layout: Sidebar */
@@ -68,6 +75,14 @@ body {
   font-size: 24px;
   font-weight: bold;
   color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  cursor: pointer;
+}
+
+.profile:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
 }
 
 .nav-item {
@@ -75,19 +90,23 @@ body {
   color: var(--muted);
   cursor: pointer;
   border-radius: 8px;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 14px;
   position: relative;
+  transform: translateX(0);
 }
 
 .nav-item:hover { 
   color: var(--text); 
   background: var(--panel); 
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .nav-item.active { 
   color: var(--text); 
   background: var(--panel); 
+  font-weight: 600;
 }
 
 .nav-item.active::before {
@@ -130,11 +149,20 @@ body {
 
 .header-right span { 
   cursor: pointer; 
-  transition: color 0.3s; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 6px 12px;
+  border-radius: 6px;
+  position: relative;
 }
 
 .header-right span:hover { 
-  color: var(--text); 
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.header-right span:active {
+  transform: translateY(0);
 }
 
 /* Toggle Button */
@@ -157,6 +185,12 @@ body {
   background: #3a3d4a;
   border-color: var(--accent);
   color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.toggle-mode:active {
+  transform: translateY(0);
 }
 
 .toggle-icon {
@@ -178,9 +212,18 @@ body {
   border-radius: 8px;
   margin: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 
+              0 0 0 1px rgba(255, 255, 255, 0.05),
               inset 0 1px 0 rgba(255, 255, 255, 0.05);
   position: relative;
-  transition: background 0.3s, border-color 0.3s;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.terminal:hover {
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 
+              0 0 0 1px rgba(255, 255, 255, 0.08),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: var(--terminal-border);
 }
 
 /* Terminal Title Bar */
@@ -328,24 +371,43 @@ body {
   border: 2px solid var(--terminal-bg);
 }
 .terminal::-webkit-scrollbar-thumb:hover { 
-  background: #484f58; 
+  background: #484f58;
+  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 /* Terminal elements */
 .system-header { 
   color: var(--muted); 
   font-size: 12px; 
-  margin-bottom: 8px; 
+  margin-bottom: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .welcome-text { 
   color: #a1a1aa; 
-  margin-bottom: 30px; 
+  margin-bottom: 30px;
+  font-size: 14px;
+  transition: color 0.3s ease;
 }
 
 .command-block { 
   margin-bottom: 40px; 
-  animation: fadeIn 0.5s ease-out; 
+  animation: fadeIn 0.5s ease-out;
+  padding: 20px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.command-block:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-left-color: var(--accent);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes fadeIn { 
@@ -363,7 +425,15 @@ body {
 
 .command-line { 
   color: var(--success); 
-  margin-bottom: 16px; 
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-family: var(--ui-font);
+  transition: color 0.3s ease;
+}
+
+.command-block:hover .command-line {
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
 }
 
 .command-line::before { 
@@ -523,19 +593,33 @@ body {
   border-radius: 6px; 
   font-size: 12px; 
   color: var(--text); 
-  transition: all 0.3s; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
 }
 
 .tag:hover { 
   background: #3a3d4a; 
   border-color: var(--accent); 
-  color: var(--accent); 
+  color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .experience-item { 
   margin-bottom: 32px; 
-  padding-bottom: 32px; 
-  border-bottom: 1px solid var(--panel); 
+  padding-bottom: 32px;
+  padding: 20px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  border-left: 3px solid transparent;
+  border-bottom: 1px solid var(--panel);
+  transition: all 0.3s ease;
+}
+
+.experience-item:hover {
+  background: rgba(0, 0, 0, 0.2);
+  border-left-color: var(--accent);
+  transform: translateX(4px);
 }
 
 .experience-item:last-child { 
@@ -583,16 +667,23 @@ body {
 /* Cursor & input */
 .cursor { 
   display: inline-block; 
-  width: 8px; 
+  width: 2px; 
   height: 18px; 
   background: var(--accent); 
-  animation: blink 1s step-end infinite; 
-  margin-left: 4px; 
+  animation: blink 1s step-end infinite, pulse 2s ease-in-out infinite; 
+  margin-left: 4px;
+  border-radius: 1px;
+  box-shadow: 0 0 8px var(--accent);
 }
 
 @keyframes blink { 
   0%,100%{opacity:1}
   50%{opacity:0}
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 8px var(--accent); }
+  50% { box-shadow: 0 0 16px var(--accent), 0 0 24px rgba(102, 126, 234, 0.5); }
 }
 
 .input-line { 
@@ -614,7 +705,23 @@ body {
   font-size: inherit; 
   outline: none; 
   flex: 1; 
-  caret-color: var(--accent); 
+  caret-color: var(--accent);
+  transition: all 0.3s ease;
+}
+
+#command-input:focus {
+  color: var(--text);
+  text-shadow: 0 0 4px rgba(102, 126, 234, 0.3);
+}
+
+#command-input::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+#command-input:focus::placeholder {
+  opacity: 0.3;
 }
 
 /* Floating decoration */
@@ -682,9 +789,11 @@ body {
   width:100%; 
   height:100%; 
   background: rgba(0,0,0,0.8); 
+  backdrop-filter: blur(8px);
   z-index:1000; 
   justify-content:center; 
-  align-items:center; 
+  align-items:center;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .modal.active{ 
@@ -696,7 +805,22 @@ body {
   padding:40px; 
   border-radius:12px; 
   max-width:920px; 
-  width:96%; 
+  width:96%;
+  border: 1px solid var(--terminal-border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.05);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .modal-title { 
@@ -817,7 +941,13 @@ body {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.setting-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .setting-card .label { 
@@ -834,8 +964,10 @@ body {
 
 .setting-card.selected {
   outline: 3px solid rgba(102,126,234,0.18);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35),
+              0 0 0 1px rgba(102,126,234,0.3);
   background: rgba(102,126,234,0.1);
+  border-color: rgba(102,126,234,0.3);
 }
 
 .theme-badge {
