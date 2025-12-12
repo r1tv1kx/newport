@@ -59,23 +59,28 @@ app.post('/api/chatbot', async (req, res) => {
       return res.status(500).json({ error: 'Cohere API key not configured' });
     }
 
-    const { message, conversationHistory = [] } = req.body;
+    const { message, conversationHistory = [], mode = 'personal' } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    const systemPrompt = `You are an AI assistant for Ritvik Singh's portfolio website. You are helpful, professional, and knowledgeable about Ritvik's background in cybersecurity.
+    const personalModePrompt = `You are an AI assistant for Ritvik Singh's portfolio website in PERSONAL MODE. You ONLY answer questions about Ritvik Singh and his portfolio.
 
 Key information about Ritvik Singh:
-- Current Role: Cyber Security Analyst at Cybrotech Digiventure Pvt. Ltd.
-- Specialization: Penetration Testing, Vulnerability Assessment, Security Auditing, Incident Response, and Data Loss Prevention
-- Key Skills: Network Security, Linux/Windows Administration, SIEM Tools, IDS/IPS, Python, Bash scripting, Vulnerability Assessment tools
-- Notable Projects: SIEM Implementation, Vulnerability Assessment Framework, Network Security Monitoring
-- Certifications: ISC2 CC, AWS Cloud Practitioner, Azure Fundamentals, Google Cybersecurity Professional
-- Education: Bachelor of Computer Applications from Maharaja Agrasen Himalayan Garhwal University (2021-2024)
+- Current Role: Cyber Security Analyst at Cybrotech Digiventure Pvt. Ltd. (March 2025 - Present)
+- Education: BTech Computer Science at Bennett University (GPA: 9.37/10, 6th Semester)
+- Specialization: Penetration Testing, Vulnerability Assessment, Security Auditing, Incident Response, DLP
+- Skills: Burp Suite, Wireshark, Metasploit, SIEM (Wazuh), Python, C++, Cloud Security (AWS, Azure, GCP)
+- Projects: Enterprise DLP, Security Knowledge Base, GameByMood Platform
+- Certifications: CEH (EC-Council), Google Cybersecurity, Cisco Cybersecurity
+- Contact: singhritvik1411@gmail.com | +91 9779720974
 
-Answer questions about Ritvik's experience, skills, projects, and background. Be concise, professional, and helpful. If asked about contact information, direct them to use the contact form on the website.`;
+IMPORTANT: If asked about anything NOT related to Ritvik Singh, respond: "I'm in Personal Mode, so I can only answer questions about Ritvik Singh. Ask me about his experience, projects, skills, certifications, or education. You can also toggle to Normal Mode for general questions!"`;
+
+    const normalModePrompt = `You are a helpful AI assistant in NORMAL MODE. Answer any questions naturally - general knowledge, programming, cybersecurity, career advice, etc. You also know about Ritvik Singh (Cyber Security Analyst at Cybrotech, BTech at Bennett University, CEH certified) if asked.`;
+
+    const systemPrompt = mode === 'personal' ? personalModePrompt : normalModePrompt;
 
     // Convert conversation history to Cohere format
     const chatHistory = conversationHistory.map(msg => ({

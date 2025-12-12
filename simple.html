@@ -459,22 +459,27 @@
                     </div>
                     <div>
                         <h3>AI Assistant</h3>
-                        <p class="chat-status">Ask me about Ritvik</p>
+                        <p class="chat-status" id="chat-mode-status">Personal Mode</p>
                     </div>
                 </div>
-                <button id="close-chat" class="close-chat-btn" title="Close chat">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button id="mode-toggle" class="mode-toggle-btn" title="Toggle between Personal and Normal mode">
+                        <span class="mode-text">Change Mode</span>
+                    </button>
+                    <button id="close-chat" class="close-chat-btn" title="Close chat">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
             
             <div id="chat-messages" class="chat-messages">
                 <div class="message bot-message">
                     <div class="message-avatar">AI</div>
                     <div class="message-content">
-                        <p>Hi! I'm an AI assistant here to help you learn about Ritvik Singh's cybersecurity expertise and experience. Feel free to ask me anything!</p>
+                        <p id="initial-message">Hi! I'm in <strong>Personal Mode</strong>. Ask me about Ritvik Singh's experience, projects, skills, certifications, or education. Toggle to Normal Mode for general questions!</p>
                     </div>
                 </div>
             </div>

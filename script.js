@@ -687,9 +687,12 @@ formInputs.forEach(input => {
     const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-input');
     const sendMessage = document.getElementById('send-message');
+    const modeToggle = document.getElementById('mode-toggle');
+    const chatModeStatus = document.getElementById('chat-mode-status');
     
     let conversationHistory = [];
     let isProcessing = false;
+    let chatMode = 'personal'; // 'personal' or 'normal'
 
     // Toggle chat window
     const toggleChat = () => {
@@ -701,6 +704,47 @@ formInputs.forEach(input => {
 
     chatToggle.addEventListener('click', toggleChat);
     closeChat.addEventListener('click', toggleChat);
+
+    // Toggle between Personal and Normal mode
+    const toggleMode = () => {
+        chatMode = chatMode === 'personal' ? 'normal' : 'personal';
+        
+        // Update UI
+        if (chatMode === 'personal') {
+            chatModeStatus.textContent = 'Personal Mode';
+            modeToggle.classList.remove('normal-mode');
+            modeToggle.innerHTML = '<span class="mode-text">Change Mode</span>';
+            modeToggle.title = 'Switch to Normal Mode';
+            chatInput.placeholder = "Ask about Ritvik's experience...";
+        } else {
+            chatModeStatus.textContent = 'Normal Mode';
+            modeToggle.classList.add('normal-mode');
+            modeToggle.innerHTML = '<span class="mode-text">Change Mode</span>';
+            modeToggle.title = 'Switch to Personal Mode';
+            chatInput.placeholder = "Ask me anything...";
+        }
+        
+        // Add mode switch notification
+        addModeNotification();
+    };
+
+    modeToggle.addEventListener('click', toggleMode);
+
+    // Add mode switch notification
+    const addModeNotification = () => {
+        const notificationDiv = document.createElement('div');
+        notificationDiv.className = 'message system-message';
+        notificationDiv.style.cssText = 'text-align: center; font-size: 0.85rem; color: var(--text-light); opacity: 0.7; padding: 0.5rem; font-style: italic;';
+        
+        if (chatMode === 'personal') {
+            notificationDiv.innerHTML = `<p>Switched to <strong>Personal Mode</strong>. Ask me about Ritvik Singh!</p>`;
+        } else {
+            notificationDiv.innerHTML = `<p>Switched to <strong>Normal Mode</strong>. Ask me anything!</p>`;
+        }
+        
+        chatMessages.appendChild(notificationDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
 
     // Add message to chat
     const addMessage = (content, isBot = false) => {
@@ -781,7 +825,8 @@ formInputs.forEach(input => {
                 },
                 body: JSON.stringify({
                     message: userMessage,
-                    conversationHistory: conversationHistory.slice(-10) // Keep last 10 messages
+                    conversationHistory: conversationHistory.slice(-10), // Keep last 10 messages
+                    mode: chatMode // Send current mode to API
                 })
             });
 

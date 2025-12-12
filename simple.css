@@ -1880,6 +1880,43 @@
        opacity: 0.7;
    }
 
+   .mode-toggle-btn {
+       background: rgba(6, 182, 212, 0.15);
+       border: 1px solid rgba(6, 182, 212, 0.3);
+       border-radius: 8px;
+       padding: 6px 12px;
+       height: 32px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       cursor: pointer;
+       transition: all 0.3s ease;
+       position: relative;
+       font-size: 0.75rem;
+       font-weight: 600;
+       color: var(--neon-cyan);
+       white-space: nowrap;
+   }
+
+   .mode-toggle-btn:hover {
+       background: rgba(6, 182, 212, 0.25);
+       border-color: var(--neon-cyan);
+       transform: scale(1.05);
+       box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+   }
+
+   .mode-toggle-btn.normal-mode {
+       background: rgba(168, 85, 247, 0.15);
+       border-color: rgba(168, 85, 247, 0.3);
+       color: var(--neon-purple);
+   }
+
+   .mode-toggle-btn.normal-mode:hover {
+       background: rgba(168, 85, 247, 0.25);
+       border-color: var(--neon-purple);
+       box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+   }
+
    .close-chat-btn {
        background: rgba(255, 255, 255, 0.1);
        border: 1px solid var(--border-color);
