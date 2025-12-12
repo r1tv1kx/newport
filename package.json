@@ -1,20 +1,12 @@
 {
-  "name": "portfolio",
+  "name": "updatedport2",
   "version": "1.0.0",
-  "description": "",
-  "main": "proxy.js",
+  "type": "module",
   "scripts": {
-    "start": "node proxy.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "node-fetch": "^3.3.2",
-    "undici": "^7.16.0"
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2"
   }
 }

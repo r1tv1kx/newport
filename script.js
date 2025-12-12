@@ -22,6 +22,42 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// ============ CURSOR TRACKER ============
+const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+let cursorTracker;
+
+if (!isCoarsePointer) {
+    cursorTracker = document.createElement('div');
+    cursorTracker.className = 'cursor-tracker';
+    document.body.appendChild(cursorTracker);
+
+    let cursorRaf;
+    const updateCursor = (x, y, scale = 0.9) => {
+        cancelAnimationFrame(cursorRaf);
+        cursorRaf = requestAnimationFrame(() => {
+            cursorTracker.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale})`;
+        });
+    };
+
+    window.addEventListener('pointermove', (e) => {
+        cursorTracker.classList.add('is-visible');
+        const scale = cursorTracker.classList.contains('is-clicked') ? 0.7 : 0.9;
+        updateCursor(e.clientX, e.clientY, scale);
+    });
+
+    window.addEventListener('pointerdown', () => {
+        cursorTracker.classList.add('is-clicked');
+    });
+
+    window.addEventListener('pointerup', () => {
+        cursorTracker.classList.remove('is-clicked');
+    });
+
+    window.addEventListener('pointerleave', () => {
+        cursorTracker.classList.remove('is-visible');
+    });
+}
+
 // ============ DARK MODE TOGGLE ============
 const themeToggle = document.getElementById('toggle-theme-btn');
 const themeIcon = document.getElementById('theme-icon');
@@ -31,10 +67,10 @@ const body = document.body;
 const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
 if (savedTheme === 'light') {
     body.classList.add('light-mode');
-    themeIcon.textContent = '☀️';
+    themeIcon.innerHTML = '<path d="M12 2v2m0 16v2m8.49-14.49l-1.42 1.42M6.34 17.66l-1.42 1.42M22 12h-2M4 12H2m16.49 4.49l-1.42-1.42M6.34 6.34L4.92 4.92"/><circle cx="12" cy="12" r="5"/>';
 } else {
     body.classList.add('dark-mode');
-    themeIcon.textContent = '🌙';
+    themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
 }
 
 // Toggle dark/light mode
@@ -43,7 +79,11 @@ themeToggle.addEventListener('click', () => {
     body.classList.toggle('light-mode');
     
     const isDark = body.classList.contains('dark-mode');
-    themeIcon.textContent = isDark ? '🌙' : '☀️';
+    if (isDark) {
+        themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    } else {
+        themeIcon.innerHTML = '<path d="M12 2v2m0 16v2m8.49-14.49l-1.42 1.42M6.34 17.66l-1.42 1.42M22 12h-2M4 12H2m16.49 4.49l-1.42-1.42M6.34 6.34L4.92 4.92"/><circle cx="12" cy="12" r="5"/>';
+    }
     localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
 });
 
@@ -104,6 +144,237 @@ scrollTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
+// ============ CRAZY SCROLL ANIMATIONS ============
+// Parallax layers with different speeds
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    
+    // Hero section parallax with multiple layers
+    const heroContent = document.querySelector('.hero-content');
+    const heroVisual = document.querySelector('.hero-visual');
+    
+    if (heroContent && scrolled < window.innerHeight) {
+        heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+        heroContent.style.opacity = Math.max(0, 1 - (scrolled / 600));
+    }
+    
+    if (heroVisual && scrolled < window.innerHeight) {
+        heroVisual.style.transform = `translateY(${scrolled * 0.3}px) rotateX(${scrolled * 0.03}deg)`;
+    }
+    
+    // Floating cards dynamic movement
+    document.querySelectorAll('.floating-card').forEach((card, index) => {
+        const speed = 0.2 + (index * 0.1);
+        const rotation = scrolled * (0.05 + index * 0.02);
+        card.style.transform = `translateY(${scrolled * speed}px) rotate(${rotation}deg) scale(${1 - scrolled * 0.0003})`;
+    });
+    
+    // Section titles zoom and fade
+    document.querySelectorAll('.section-title').forEach(title => {
+        const rect = title.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        if (rect.top < windowHeight && rect.bottom > 0) {
+            const progress = (windowHeight - rect.top) / windowHeight;
+            const scale = 0.8 + (progress * 0.2);
+            title.style.transform = `scale(${Math.min(scale, 1)})`;
+            title.style.opacity = Math.min(progress * 1.5, 1);
+        }
+    });
+    
+    // Cards reveal with stagger effect
+    document.querySelectorAll('.about-card, .project-card, .cert-card, .skill-category').forEach((card, index) => {
+        const rect = card.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        if (rect.top < windowHeight - 100) {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0) rotateX(0deg)';
+            }, index * 100);
+        }
+    });
+    
+    // Navbar blur effect
+    const navbar = document.getElementById('navbar');
+    if (scrolled > 50) {
+        navbar.style.backdropFilter = 'blur(20px)';
+        navbar.style.background = body.classList.contains('light-mode') 
+            ? 'rgba(255, 255, 255, 0.85)' 
+            : 'rgba(15, 23, 42, 0.85)';
+    } else {
+        navbar.style.backdropFilter = 'blur(10px)';
+        navbar.style.background = body.classList.contains('light-mode')
+            ? 'rgba(255, 255, 255, 0.9)'
+            : 'rgba(15, 23, 42, 0.7)';
+    }
+});
+
+// ============ MAGNETIC BUTTON EFFECT ============
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('mousemove', (e) => {
+        const rect = button.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
+    });
+    
+    button.addEventListener('mouseleave', () => {
+        button.style.transform = 'translate(0, 0) scale(1)';
+    });
+});
+
+// ============ 3D CARD TILT EFFECT ============
+document.querySelectorAll('.about-card, .project-card, .cert-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+});
+
+// ============ SMOOTH CURSOR TRAIL ============
+const createCursorTrail = () => {
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    document.body.appendChild(trail);
+    
+    let mouseX = 0, mouseY = 0;
+    let trailX = 0, trailY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    
+    const animateTrail = () => {
+        trailX += (mouseX - trailX) * 0.1;
+        trailY += (mouseY - trailY) * 0.1;
+        
+        trail.style.left = trailX + 'px';
+        trail.style.top = trailY + 'px';
+        
+        requestAnimationFrame(animateTrail);
+    };
+    
+    animateTrail();
+};
+
+createCursorTrail();
+
+// ============ DYNAMIC BACKGROUND PARTICLES ============
+const createParticles = () => {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particles-canvas';
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '-1';
+    canvas.style.pointerEvents = 'none';
+    document.body.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const particles = [];
+    const particleCount = 50;
+    
+    class Particle {
+        constructor() {
+            this.reset();
+        }
+        
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 0.5 - 0.25;
+            this.speedY = Math.random() * 0.5 - 0.25;
+            this.opacity = Math.random() * 0.5 + 0.2;
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            
+            if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) {
+                this.reset();
+            }
+        }
+        
+        draw() {
+            const isDark = body.classList.contains('dark-mode');
+            ctx.fillStyle = isDark 
+                ? `rgba(14, 165, 233, ${this.opacity})` 
+                : `rgba(14, 165, 233, ${this.opacity * 0.6})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+    
+    const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        // Connect nearby particles
+        particles.forEach((a, i) => {
+            particles.slice(i + 1).forEach(b => {
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    const isDark = body.classList.contains('dark-mode');
+                    ctx.strokeStyle = isDark
+                        ? `rgba(14, 165, 233, ${0.1 * (1 - distance / 100)})`
+                        : `rgba(14, 165, 233, ${0.05 * (1 - distance / 100)})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                }
+            });
+        });
+        
+        requestAnimationFrame(animate);
+    };
+    
+    animate();
+    
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+};
+
+createParticles();
 
 // ============ INTERSECTION OBSERVER FOR FADE-IN ANIMATIONS ============
 const observerOptions = {
@@ -294,3 +565,116 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// ============ CONTACT FORM HANDLING ============
+const contactForm = document.getElementById('contactForm');
+const formMessage = document.getElementById('formMessage');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            subject: document.getElementById('subject').value,
+            message: document.getElementById('message').value
+        };
+        
+        // Disable submit button during processing
+        const submitBtn = contactForm.querySelector('.btn-submit');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="btn-text">SENDING...</span>';
+        submitBtn.disabled = true;
+        
+        try {
+            // Use FormSubmit.co - free email service, no API key needed
+            const response = await fetch('https://formsubmit.co/ajax/singhritvik1411@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    subject: formData.subject,
+                    message: formData.message,
+                    _captcha: 'false',
+                    _template: 'table'
+                })
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success message
+                    showFormMessage('✓ SENT - Your message has been delivered successfully!', 'success');
+                    
+                    // Reset form
+                    contactForm.reset();
+                    
+                    // Reset input styling
+                    document.querySelectorAll('.form-input, .form-textarea').forEach(input => {
+                        input.style.borderColor = 'var(--border-color)';
+                        input.style.boxShadow = 'none';
+                    });
+                } else {
+                    throw new Error('Failed to send message');
+                }
+            } else {
+                throw new Error('Failed to send message');
+            }
+            
+        } catch (error) {
+            console.error('Error:', error);
+            // Show error message
+            showFormMessage('Failed to send. Please try again or email directly at singhritvik1411@gmail.com', 'error');
+        } finally {
+            // Re-enable submit button after delay
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        }
+    });
+}
+
+function showFormMessage(message, type) {
+    formMessage.textContent = message;
+    formMessage.className = `form-message ${type} show`;
+    
+    // Hide message after 5 seconds
+    setTimeout(() => {
+        formMessage.classList.remove('show');
+    }, 5000);
+}
+
+// ============ FORM INPUT ANIMATIONS ============
+const formInputs = document.querySelectorAll('.form-input, .form-textarea');
+
+formInputs.forEach(input => {
+    // Add floating label effect
+    input.addEventListener('focus', () => {
+        input.parentElement.classList.add('focused');
+    });
+    
+    input.addEventListener('blur', () => {
+        if (!input.value) {
+            input.parentElement.classList.remove('focused');
+        }
+    });
+    
+    // Add glow effect on valid input
+    input.addEventListener('input', () => {
+        if (input.checkValidity() && input.value.length > 0) {
+            input.style.borderColor = 'var(--neon-green)';
+            input.style.boxShadow = '0 0 15px rgba(57, 255, 20, 0.2)';
+        } else {
+            input.style.borderColor = 'var(--border-color)';
+            input.style.boxShadow = 'none';
+        }
+    });
+});
