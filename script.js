@@ -678,3 +678,152 @@ formInputs.forEach(input => {
         }
     });
 });
+
+// ============ AI CHATBOT ============
+(function() {
+    const chatToggle = document.getElementById('chat-toggle');
+    const closeChat = document.getElementById('close-chat');
+    const chatContainer = document.getElementById('chatbot-container');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const sendMessage = document.getElementById('send-message');
+    
+    let conversationHistory = [];
+    let isProcessing = false;
+
+    // Toggle chat window
+    const toggleChat = () => {
+        chatContainer.classList.toggle('chatbot-closed');
+        if (!chatContainer.classList.contains('chatbot-closed')) {
+            chatInput.focus();
+        }
+    };
+
+    chatToggle.addEventListener('click', toggleChat);
+    closeChat.addEventListener('click', toggleChat);
+
+    // Add message to chat
+    const addMessage = (content, isBot = false) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isBot ? 'bot-message' : 'user-message'}`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'message-avatar';
+        avatar.textContent = isBot ? 'AI' : 'You';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        
+        const p = document.createElement('p');
+        p.textContent = content;
+        messageContent.appendChild(p);
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    // Add typing indicator
+    const addTypingIndicator = () => {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot-message typing-indicator';
+        typingDiv.id = 'typing-indicator';
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'message-avatar';
+        avatar.textContent = 'AI';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+        
+        typingDiv.appendChild(avatar);
+        typingDiv.appendChild(messageContent);
+        
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    // Remove typing indicator
+    const removeTypingIndicator = () => {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) {
+            indicator.remove();
+        }
+    };
+
+    // Send message to API
+    const sendMessageToAPI = async (message) => {
+        if (isProcessing || !message.trim()) return;
+        
+        isProcessing = true;
+        const userMessage = message.trim();
+        
+        // Add user message to chat
+        addMessage(userMessage, false);
+        chatInput.value = '';
+        
+        // Add to conversation history
+        conversationHistory.push({ role: 'user', content: userMessage });
+        
+        // Show typing indicator
+        addTypingIndicator();
+        sendMessage.disabled = true;
+        chatInput.disabled = true;
+
+        try {
+            const response = await fetch('/api/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: userMessage,
+                    conversationHistory: conversationHistory.slice(-10) // Keep last 10 messages
+                })
+            });
+
+            const data = await response.json();
+            
+            removeTypingIndicator();
+
+            if (response.ok && data.reply) {
+                addMessage(data.reply, true);
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+            } else {
+                addMessage(data.error || 'Sorry, I encountered an error. Please try again.', true);
+            }
+        } catch (error) {
+            console.error('Chat error:', error);
+            removeTypingIndicator();
+            addMessage('Sorry, I\'m having trouble connecting. Please check your internet connection and try again.', true);
+        } finally {
+            isProcessing = false;
+            sendMessage.disabled = false;
+            chatInput.disabled = false;
+            chatInput.focus();
+        }
+    };
+
+    // Send button click
+    sendMessage.addEventListener('click', () => {
+        sendMessageToAPI(chatInput.value);
+    });
+
+    // Enter key to send
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessageToAPI(chatInput.value);
+        }
+    });
+
+    // Suggested questions (optional - you can add quick action buttons)
+    const suggestedQuestions = [
+        "What are Ritvik's key skills?",
+        "Tell me about his experience",
+        "What certifications does he have?"
+    ];
+})();
